@@ -1,0 +1,15 @@
+services:
+  node-lab:
+    build: ./node-lab
+    container_name: node-lab-instance
+    init: true
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  php-lab:
+    build: ./php-lab
+    container_name: php-lab-instance
+    ports:
+      - "8080:80"
+    restart: unless-stopped

