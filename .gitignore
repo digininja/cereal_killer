@@ -1,0 +1,33 @@
+# ========================
+# Node.js Dependencies & Cache
+# ========================
+node_modules/
+
+# ========================
+# Lab Exploitation Artifacts
+# ========================
+# Ignore all payload drops, output dumps, or generated logs in the log directories
+php-lab/logs/*
+node-lab/logs/*
+
+# Keep the directories tracked in Git so the lab doesn't break on a fresh clone
+!php-lab/logs/.gitkeep
+!node-lab/logs/.gitkeep
+
+# Common manual exploit proof files created during lab tests
+*.txt
+*.pwned
+*.out
+*.log
+
+# ========================
+# Environment & Sensitive Files
+# ========================
+.env
+.env.local
+.env.*.local
+
+*.swq
+*.swp
+*.swo
+*~
