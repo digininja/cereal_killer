@@ -4,7 +4,7 @@ services:
   python-lab:
     build:
       context: ./python-lab
-    image: ghcr.io/digininja/YOUR_REPO/python-lab:latest
+    image: ghcr.io/digininja/digininja/python-lab:latest
     ports:
       - "5000:5000"
     environment:
@@ -12,12 +12,12 @@ services:
 
   node-lab:
     build: ./node-lab
-    image: ghcr.io/digininja/YOUR_REPO/node-lab:latest
+    image: ghcr.io/digininja/digininja/node-lab:latest
     ports:
       - "3000:3000"
 
   php-lab:
     build: ./php-lab
-    image: ghcr.io/digininja/YOUR_REPO/php-lab:latest
+    image: ghcr.io/digininja/digininja/php-lab:latest
     ports:
       - "8080:80"
