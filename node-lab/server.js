@@ -94,7 +94,7 @@ app.get('/', (req, res) => {
     </head>
     <body>
         <div class="container">
-            <h1>Dashboard (Node.js)</h1>
+            <h1>Dashboard - Node.js</h1>
             <p>Your current theme colour is: <strong>${settings.color || 'lightblue'}</strong></p>
             
             <hr>

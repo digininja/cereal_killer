@@ -58,7 +58,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 </head>
 <body>
     <div class="container">
-        <h1>Dashboard</h1>
+        <h1>Dashboard - Python</h1>
         <p>Your current theme color is: <strong>{{ bg_color }}</strong></p>
         
         <hr>

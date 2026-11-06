@@ -72,7 +72,7 @@ $logContents = file_exists($logPath) ? file_get_contents($logPath) : "No logs ye
 </head>
 <body>
     <div class="container">
-        <h1>Dashboard</h1>
+        <h1>Dashboard - PHP</h1>
         <p>Your current theme colour is: <strong><?php echo $bgColor; ?></strong></p>
         
         <hr>
