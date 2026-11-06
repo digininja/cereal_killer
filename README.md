@@ -143,7 +143,7 @@ I will be creating a set of videos to go with this lab and will add the link her
 
 - [exploit-run_command.py](python-lab/exploit-run_command.py) - A basic script which uses the Python `os.system` function to run the `echo` command and write an entry to the log file.
 - [exploit-leak_routes.py](python-lab/exploit-leak_routes.py) - A script to leak a list of endpoints available on the application. These will then be used in the monkey patch exploit.
-- [exploit-monkey_patch_route.py](python-lab/exploit-monkey_patch_route.py) - This script will modify the function called by a given endpoint to point to one dynamically added to the app. The function added takes the query string parameter `cmd` and runs it using the `os.system` function.
+- [exploit-monkey_patch_route.py](python-lab/exploit-monkey_patch_route.py) - This script will modify the function called by a given endpoint to point to one dynamically added to the app. The new function acts as a shim for the old one, if the query string parameter `cmd` is passed, it takes it and runs the command using the `os.system` function, otherwise it hands control back to the original function making the backdoor transparent to normal users.
 
 ### Node.js
 
