@@ -1,24 +1,23 @@
+version: '3.8'
+
 services:
-  node-lab:
-    build: ./node-lab
-    container_name: node-lab-instance
-    init: true
-    ports:
-      - "8000:8000"
-    restart: unless-stopped
-
-  php-lab:
-    build: ./php-lab
-    container_name: php-lab-instance
-    ports:
-      - "8080:80"
-    restart: unless-stopped
-
   python-lab:
     build:
       context: ./python-lab
+    image: ghcr.io/digininja/YOUR_REPO/python-lab:latest
     ports:
       - "5000:5000"
     environment:
       - FLASK_ENV=development
-    restart: unless-stopped
+
+  node-lab:
+    build: ./node-lab
+    image: ghcr.io/digininja/YOUR_REPO/node-lab:latest
+    ports:
+      - "3000:3000"
+
+  php-lab:
+    build: ./php-lab
+    image: ghcr.io/digininja/YOUR_REPO/php-lab:latest
+    ports:
+      - "8080:80"
