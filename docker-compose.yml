@@ -12,7 +12,7 @@ services:
     build: ./node-lab
     image: ghcr.io/digininja/digininja/node-lab:latest
     ports:
-      - "3000:3000"
+      - "8000:8000"
 
   php-lab:
     build: ./php-lab
