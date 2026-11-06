@@ -1,108 +1,70 @@
-# Insecure Deserialization Vulnerability Labs
+# Multi-Language Deserialization Lab Suite
 
-A standalone, multi-container security laboratory designed to demonstrate insecure object deserialization and remote code execution (RCE) patterns across different runtime environments: **PHP 8 (Apache)** and **Node.js 18 (Express)**.
+An educational training environment designed to explore serialization mechanisms, runtime application behavior, and insecure deserialization vulnerabilities across multiple technology stacks. 
 
-Each lab runs in an isolated container configured with proper service boundaries, non-root execution contexts where applicable, and distribution-ready packaging.
+This suite provides isolated, containerized applications in Python, Node.js, and PHP. Each lab demonstrates how different languages handle object state and routing, allowing researchers to practice techniques like in-memory manipulation and monkey-patching.
 
----
+## 🚀 Lab Environments
 
-## Architecture Overview
+The suite runs locally via Docker Compose. Each language lab is exposed on a dedicated port:
 
-| Lab Service | Environment | Host Port | Target Vulnerability Pattern |
-|---|---|---|---|
-| `node-lab` | Node.js 18 (Alpine), Express | `8000` | Untrusted object deserialization (`node-serialize`) |
-| `php-lab` | PHP 8.2 (Debian), Apache | `8080` | Native PHP object injection (`unserialize()`) |
-
-```text
-.
-├── docker-compose.yml
-├── .gitignore
-├── README.md
-├── node-lab/
-│   ├── Dockerfile
-│   ├── package.json
-│   ├── server.js
-│   └── logs/
-└── php-lab/
-    ├── Dockerfile
-    ├── classes.php
-    ├── index.php
-    └── logs/
-```
+| Language / Framework | Port | Primary Vector | Description |
+| :--- | :--- | :--- | :--- |
+| **Python (Flask)** | `5000` | `pickle` | Demonstrates Python object deserialization via the `?prefs=` parameter. Features a dynamically patched `/status` endpoint and a custom developer debugging panel. |
+| **Node.js (Express)** | `3000` | Node Deserialization | Explores JavaScript object lifecycles, prototype pollution, and Express middleware manipulation. |
+| **PHP (Apache)** | `8080` | `unserialize()` | Focuses on PHP magic methods (e.g., `__wakeup`, `__destruct`) and property oriented programming (POP) chains. |
 
 ---
 
-## Prerequisites
+## 🛠️ Prerequisites
 
-- [Docker Engine](https://docs.docker.com/engine/install/) (v20.10+ recommended)
-- [Docker Compose](https://docs.docker.com/compose/) (v2.0+)
+* [Docker](https://docs.docker.com/get-docker/)
+* [Docker Compose](https://docs.docker.com/compose/install/)
 
 ---
 
-## Quickstart
+## 🚦 Getting Started
 
-### 1. Clone the Repository
+### Option 1: Using the Start Script (Recommended)
+The easiest way to build the images and start the suite is using the provided bash script. This will start the containers in the background and output the access URLs.
 
 ```bash
-git clone https://github.com/<your-username>/deserialization-labs.git
-cd deserialization-labs
+chmod +x start.sh
+./start.sh
 ```
 
-### 2. Build and Start the Containers
-
-Run the compose stack in detached mode:
+### Option 2: Manual Docker Compose
+If you prefer running it directly (or are on Windows without WSL), run:
 
 ```bash
-docker compose up -d --build
+docker-compose up --build
 ```
-
-### 3. Access the Labs
-
-- **Node.js Lab:** [http://localhost:8000](http://localhost:8000)
-- **PHP Lab:** [http://localhost:8080](http://localhost:8080)
+*Note: Add `-d` to run in detached mode.*
 
 ---
 
-## Lab Scenarios
+## 🐍 Python Lab Focus: Flask & Pickle
 
-### 1. Node.js Lab (`:8000`)
+The Python lab simulates a dashboard where user preferences (like UI themes) are serialized and passed via the URL. 
 
-* **Mechanism:** Express application taking serialized user preferences via URL query parameters or cookies.
-* **Vulnerability:** Unsafe deserialization using vulnerable versions of `node-serialize` or custom serialization engines allowing Immediate Invocation Function Expressions (IIFE).
-* **Objective:** Identify the input point, craft a serialized JavaScript payload with an invoked function object, and trigger server-side code execution.
-
-### 2. PHP Lab (`:8080`)
-
-* **Mechanism:** PHP application passing base64-encoded or raw serialized strings into `unserialize()`.
-* **Vulnerability:** POP (Property Oriented Programming) gadget chaining through magic methods (such as `__wakeup()`, `__destruct()`, or `__toString()`) defined in `classes.php`.
-* **Objective:** Review the class definitions, construct a chained gadget payload, and write arbitrary output or obtain code execution through the `logs/` directory.
+* **Target URL**: `http://localhost:5000/`
+* **Vulnerability**: The application takes base64-encoded, URL-encoded payload via the `?prefs=` query parameter and processes it using Python's native `pickle.loads()`.
+* **Points of Interest**: 
+  * Flask explicitly locks routing (`app.add_url_rule`) after the first request. 
+  * The lab includes a `/status` endpoint intended for health checks, which can be used as a target for in-memory handler patching (monkey-patching the `app.view_functions` dictionary).
+  * A built-in developer toolbar displays the `unserialize()` engine output to help craft and debug payloads in real-time.
 
 ---
 
-## Managing and Resetting the Environment
+## 🛑 Stopping the Labs
 
-Because labs modify container filesystem state (e.g., dropping proof files in `logs/`), reset the containers between runs to maintain a clean slate:
+To safely stop and remove the running containers, networks, and volumes:
 
 ```bash
-# View live application logs
-docker compose logs -f
-
-# View logs for a specific service
-docker compose logs -f node-lab
-docker compose logs -f php-lab
-
-# Soft restart (flushes in-memory backdoors/routes)
-docker compose restart
-
-# Full lab reset (destroys containers, wiping dropped artifacts and in-memory states)
-docker compose down && docker compose up -d
-
-# Stop and shut down the environment
-docker compose down
+docker-compose down
 ```
 
----
+## 📝 Development Notes
 
-## Security Notice & Disclaimer
-
-> **Warning:** This repository contains intentionally vulnerable code designed solely for educational, research, and authorized security training purposes. Do not deploy these containers to untrusted networks, production environments, or public cloud instances without network isolation.
+* **Live Logs**: Each container mounts a fresh logging directory on startup. Local dev logs are excluded via `.dockerignore` to prevent container pollution. To view live server logs across all apps, run `docker-compose logs -f`.
+* **Hot Reloading**: If configured in `docker-compose.yml`, local directories are volume-mounted into the containers. Saving a file locally will reflect immediately in the labs (Flask is set to `debug=True` for auto-reloading).
