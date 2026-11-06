@@ -135,9 +135,9 @@ docker compose down
 
 ## 🔓 Exploitation Guide
 
-I will be creating a set of videos to go with this lab and will add the link here once complete.
-
 I've developed a set of exploits for each framework, they are stored in the directory with the server files and all start with `exploit-`. Below is a description of each.
+
+I will be creating a set of videos to go with this lab and will add the link here once complete.
 
 ### Python
 
