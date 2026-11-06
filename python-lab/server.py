@@ -64,7 +64,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <hr>
         <h3>Lab Controls:</h3>
         <ul>
-            <li><a href="?prefs={{ default_payload }}">Load Default Theme</a></li>
+            <li><a href="?prefs={{ default_payload }}">Load Blue Theme</a></li>
             <li><a href="?prefs={{ red_payload }}">Load Red Theme</a></li>
         </ul>
     </div>
