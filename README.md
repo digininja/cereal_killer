@@ -11,7 +11,7 @@ The suite runs locally via Docker Compose. Each language lab is exposed on a ded
 | Language / Framework | Port | Primary Vector | Description |
 | :--- | :--- | :--- | :--- |
 | **Python (Flask)** | `5000` | `pickle` | Demonstrates Python object deserialization via the `?prefs=` parameter. Features a dynamically patched `/status` endpoint and a custom developer debugging panel. |
-| **Node.js (Express)** | `3000` | Node Deserialization | Explores JavaScript object lifecycles, prototype pollution, and Express middleware manipulation. |
+| **Node.js (Express)** | `8000` | Node Deserialization | Explores JavaScript object lifecycles, prototype pollution, and Express middleware manipulation. |
 | **PHP (Apache)** | `8080` | `unserialize()` | Focuses on PHP magic methods (e.g., `__wakeup`, `__destruct`) and property oriented programming (POP) chains. |
 
 ---
