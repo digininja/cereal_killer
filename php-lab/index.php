@@ -73,12 +73,12 @@ $logContents = file_exists($logPath) ? file_get_contents($logPath) : "No logs ye
 <body>
     <div class="container">
         <h1>Dashboard</h1>
-        <p>Your current theme color is: <strong><?php echo $bgColor; ?></strong></p>
+        <p>Your current theme colour is: <strong><?php echo $bgColor; ?></strong></p>
         
         <hr>
         <h3>Lab Controls:</h3>
         <ul>
-            <li><a href="?prefs=<?php echo urlencode(base64_encode(serialize(new ThemeConfig()))); ?>">Load Default Theme</a></li>
+            <li><a href="?prefs=<?php echo urlencode(base64_encode(serialize(new ThemeConfig()))); ?>">Load Blue Theme</a></li>
             <?php 
                 $redTheme = new ThemeConfig();
                 $redTheme->color = "lightcoral";

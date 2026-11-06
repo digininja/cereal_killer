@@ -95,12 +95,12 @@ app.get('/', (req, res) => {
     <body>
         <div class="container">
             <h1>Dashboard (Node.js)</h1>
-            <p>Your current theme color is: <strong>${settings.color || 'lightblue'}</strong></p>
+            <p>Your current theme colour is: <strong>${settings.color || 'lightblue'}</strong></p>
             
             <hr>
             <h3>Lab Controls:</h3>
             <ul>
-                <li><a href="?prefs=${defaultTheme64}">Load Default Theme</a></li>
+                <li><a href="?prefs=${defaultTheme64}">Load Blue Theme</a></li>
                 <li><a href="?prefs=${redTheme64}">Load Red Theme</a></li>
             </ul>
         </div>
