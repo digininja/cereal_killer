@@ -1,0 +1,30 @@
+name: Build Docker Containers
+
+# Trigger the workflow on pushes and PRs to the main/master branch
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build all containers via Docker Compose
+        run: docker-compose build
+
+      # Optional: Do a quick test run to ensure they start without crashing
+      - name: Test containers start successfully
+        run: |
+          docker-compose up -d
+          docker-compose ps
+          sleep 5
+          docker-compose down
