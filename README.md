@@ -37,7 +37,7 @@ chmod +x start.sh
 If you prefer running it directly (or are on Windows without WSL), run:
 
 ```
-docker-compose up --build
+docker compose up --build
 
 ```
 
@@ -129,12 +129,33 @@ The PHP lab focuses on the classic `unserialize()` vulnerability, common in lega
 To safely stop and remove the running containers, networks, and volumes if using Docker Compose:
 
 ```
-docker-compose down
+docker compose down
 
 ```
 
+## 🔓 Exploitation Guide
+
+I will be creating a set of videos to go with this lab and will add the link here once complete.
+
+I've developed a set of exploits for each framework, they are stored in the directory with the server files and all start with `exploit-`. Below is a description of each.
+
+### Python
+
+- [exploit-run_command.py](python-lab/exploit-run_command.py) - A basic script which uses the Python `os.system` function to run the `echo` command and write an entry to the log file.
+- [exploit-leak_routes.py](python-lab/exploit-leak_routes.py) - A script to leak a list of endpoints available on the application. These will then be used in the monkey patch exploit.
+- [exploit-monkey_patch_route.py](python-lab/exploit-monkey_patch_route.py) - This script will modify the function called by a given endpoint to point to one dynamically added to the app. The function added takes the query string parameter `cmd` and runs it using the `os.system` function.
+
+### Node.js
+
+- [exploit-run_command.js](node-lab/exploit-run_command.js) - Uses command execution to run the system `echo` command and add a line to the system log file.
+- [exploit-injection.js](node-lab/exploit-injection.js) - Dynamically adds a new endpoint called `/backdoor` which runs commands passed to it in the `cmd` query string parameter.
+
+### PHP
+
+- [exploit-run_command.php](php-lab/exploit-run_command.php) - Drops a PHP script called `shell.php` in the writeable logs directory. This script can then be called with the `cmd` query string parameter to run arbitrary command using the PHP `system` function.
+
 ## 📝 Development Notes
 
-* **Live Logs**: Each container mounts a fresh logging directory on startup. Local dev logs are excluded via `.dockerignore` to prevent container pollution. To view live server logs across all apps, run `docker-compose logs -f`.
+* **Live Logs**: Each container mounts a fresh logging directory on startup. Local dev logs are excluded via `.dockerignore` to prevent container pollution. To view live server logs across all apps, run `docker compose logs -f`.
 
-* **Hot Reloading**: If configured in `docker-compose.yml`, local directories are volume-mounted into the containers. Saving a file locally will reflect immediately in the labs (Flask is set to `debug=True` for auto-reloading).
+* **Hot Reloading**: If configured in `docker compose.yml`, local directories are volume-mounted into the containers. Saving a file locally will reflect immediately in the labs (Flask is set to `debug=True` for auto-reloading).
