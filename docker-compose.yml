@@ -18,4 +18,4 @@ services:
     build: ./php-lab
     image: ghcr.io/digininja/digininja/php-lab:latest
     ports:
-      - "8080:80"
+      - "6000:80"
