@@ -12,7 +12,7 @@ The suite runs locally via Docker Compose. Each language lab is exposed on a ded
 | ----- | ----- | ----- | ----- | 
 | **Python (Flask)** | `5000` | `pickle` | Demonstrates Python object deserialization via the `?prefs=` parameter. Features a dynamically patched `/status` endpoint and a custom developer debugging panel. | 
 | **Node.js (Express)** | `8000` | Node Deserialization | Explores JavaScript object lifecycles, prototype pollution, and Express middleware manipulation. | 
-| **PHP (Apache)** | `8080` | `unserialize()` | Focuses on PHP magic methods (e.g., `__wakeup`, `__destruct`) and property oriented programming (POP) chains. | 
+| **PHP (Apache)** | `6000` | `unserialize()` | Focuses on PHP magic methods (e.g., `__wakeup`, `__destruct`) and property oriented programming (POP) chains. | 
 
 ## 🛠️ Prerequisites
 
@@ -68,11 +68,11 @@ docker run -d -p 8000:8000 --name node-lab ghcr.io/digininja/digininja/node-lab:
 **PHP (Apache) Lab:**
 
 ```
-docker run -d -p 8080:80 --name php-lab ghcr.io/digininja/digininja/php-lab:latest
+docker run -d -p 6000:80 --name php-lab ghcr.io/digininja/digininja/php-lab:latest
 
 ```
 
-*Access at: `http://localhost:8080`*
+*Access at: `http://localhost:6000`*
 
 *(Note: To stop and remove an individual lab, run `docker rm -f <container-name>`)*
 
@@ -112,7 +112,7 @@ The Node.js lab explores how JavaScript handles object serialization and runtime
 
 The PHP lab focuses on the classic `unserialize()` vulnerability, common in legacy applications and content management systems.
 
-* **Target URL**: `http://localhost:8080/`
+* **Target URL**: `http://localhost:6000/`
 
 * **Vulnerability**: Direct user input is passed into the native `unserialize()` function, allowing attackers to instantiate arbitrary classes already loaded in the environment.
 
